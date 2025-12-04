@@ -1,9 +1,32 @@
-package com.example.Trabalho_Final_HG_Nathan.Model;
+package com.example.Trabalho_Final_HG_Nathan.model;
 
+
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+import java.util.Objects;
+
+
+@Entity
+@Table( name = "cliente")
 public class Cliente {
-    
+
+    @Id
     private int id;
+
+    @Column
+    @NotBlank( message = "Nome não pode ser nulo")
     private String nome;
+
+
+    @Column
+    @NotBlank( message = "CPF não pode ser nulo")
     private String cpf;
 
     public Cliente() {
