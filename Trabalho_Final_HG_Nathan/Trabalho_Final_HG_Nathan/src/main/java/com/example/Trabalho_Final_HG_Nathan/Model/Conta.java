@@ -1,11 +1,30 @@
-package com.example.Trabalho_Final_HG_Nathan.Model;
+package com.example.Trabalho_Final_HG_Nathan.model;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
+import java.util.Objects;
+
+
+@Entity
+@Table( name = "conta")
 public class Conta {
-    
+
+    @Id
     private int id;
+    @Column
+    @NotBlank( message = "Numero não pode ser nulo")
     private int numero;
+    @Column
     private double saldo;
 
+    private Cliente cliente;
+
+    private Agencia agencia;
     public Conta() {
     }
 
@@ -73,6 +92,4 @@ public class Conta {
     public String toString() {
         return "Conta [id=" + id + ", numero=" + numero + ", saldo=" + saldo + "]";
     }
-
-    
 }
