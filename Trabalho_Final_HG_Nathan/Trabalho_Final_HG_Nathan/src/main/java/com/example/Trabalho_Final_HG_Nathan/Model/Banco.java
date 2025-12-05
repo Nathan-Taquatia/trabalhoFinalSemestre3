@@ -1,10 +1,24 @@
-package com.example.Trabalho_Final_HG_Nathan.Model;
+package com.example.Trabalho_Final_HG_Nathan.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+
+@Entity
+@Table( name = "banco")
 public class Banco {
-    
+    @Id
     private int id;
+    @Column
+    @NotBlank( message = "Nome não pode ser nulo")
     private String nome;
+    @Column
+    @NotBlank( message = "Código não pode ser nulo")
     private int codigo;
+    @Column
+    @NotBlank( message = "CNPJ não pode ser nulo")
     private String cnpj;
 
     public Banco() {
@@ -90,6 +104,4 @@ public class Banco {
     public String toString() {
         return "Banco [id=" + id + ", nome=" + nome + ", codigo=" + codigo + ", cnpj=" + cnpj + "]";
     }
-
-    
 }
