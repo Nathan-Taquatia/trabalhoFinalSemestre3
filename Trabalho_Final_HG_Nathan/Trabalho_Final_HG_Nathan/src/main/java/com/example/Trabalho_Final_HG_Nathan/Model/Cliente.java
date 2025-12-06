@@ -2,10 +2,7 @@ package com.example.Trabalho_Final_HG_Nathan.model;
 
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -14,26 +11,24 @@ import java.util.Objects;
 
 
 @Entity
-@Table( name = "cliente")
+@Table(name = "cliente")
 public class Cliente {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column
-    @NotBlank( message = "Nome não pode ser nulo")
+    @Column(nullable = false)
+    @NotBlank(message = "Nome não pode ser nulo")
     private String nome;
 
-
-    @Column
-    @NotBlank( message = "CPF não pode ser nulo")
+    @Column(nullable = false, unique = true)
+    @NotBlank(message = "CPF não pode ser nulo")
     private String cpf;
 
-    public Cliente() {
-    }
+    public Cliente() {}
 
-    public Cliente(int id, String nome, String cpf) {
-        this.id = id;
+    public Cliente(String nome, String cpf) {
         this.nome = nome;
         this.cpf = cpf;
     }
