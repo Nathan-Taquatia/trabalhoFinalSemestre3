@@ -1,8 +1,5 @@
 package com.example.Trabalho_Final_HG_Nathan.model;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -11,27 +8,34 @@ import java.util.Objects;
 
 
 @Entity
-@Table( name = "conta")
+@Table(name = "conta")
 public class Conta {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column
-    @NotBlank( message = "Numero não pode ser nulo")
+
+    @Column(nullable = false)
     private int numero;
-    @Column
+
+    @Column(nullable = false)
     private double saldo;
 
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
+    @ManyToOne
+    @JoinColumn(name = "agencia_id", nullable = false)
     private Agencia agencia;
-    public Conta() {
-    }
 
-    public Conta(int id, int numero, double saldo) {
-        this.id = id;
+    public Conta() {}
+
+    public Conta(int numero, double saldo, Cliente cliente, Agencia agencia) {
         this.numero = numero;
         this.saldo = saldo;
+        this.cliente = cliente;
+        this.agencia = agencia;
     }
 
     public int getId() {
