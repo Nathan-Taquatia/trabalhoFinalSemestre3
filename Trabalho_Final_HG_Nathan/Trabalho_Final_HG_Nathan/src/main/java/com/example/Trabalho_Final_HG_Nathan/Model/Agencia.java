@@ -1,35 +1,33 @@
 package com.example.Trabalho_Final_HG_Nathan.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table( name = "agencia")
-public class Agencia{
+@Table(name = "agencia")
+public class Agencia {
 
     @Id
-    private int id;
-    @Column
-    @NotBlank( message = "Nome não pode ser nulo")
-    private int numero;
-    @Column
-    @NotBlank( message = "Nome não pode ser nulo")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @NotNull(message = "Número não pode ser nulo")
+    private Integer numero;
+
+    @NotBlank(message = "Nome não pode ser nulo")
     private String nome;
 
+    @ManyToOne
+    @JoinColumn(name = "banco_id")
     private Banco banco;
 
+    public Agencia() { }
 
-
-    public Agencia() {
-    }
-
-    public Agencia(int id, int numero, String nome) {
-        this.id = id;
+    public Agencia(Integer numero, String nome, Banco banco) {
         this.numero = numero;
         this.nome = nome;
+        this.banco = banco;
     }
 
     public int getId() {
