@@ -5,27 +5,33 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
-@Table( name = "banco")
+@Table(name = "banco")
 public class Banco {
+
     @Id
-    private int id;
-    @Column
-    @NotBlank( message = "Nome não pode ser nulo")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @NotBlank(message = "Nome não pode ser nulo")
     private String nome;
-    @Column
-    @NotBlank( message = "Código não pode ser nulo")
-    private int codigo;
-    @Column
-    @NotBlank( message = "CNPJ não pode ser nulo")
+
+    @NotNull(message = "Código não pode ser nulo")
+    private Integer codigo;
+
+    @NotBlank(message = "CNPJ não pode ser nulo")
     private String cnpj;
 
-    public Banco() {
-    }
+    @OneToMany(mappedBy = "banco")
+    private List<Agencia> agencias;
 
-    public Banco(int id, String nome, int codigo, String cnpj) {
-        this.id = id;
+    public Banco() { }
+
+    public Banco(String nome, Integer codigo, String cnpj) {
         this.nome = nome;
         this.codigo = codigo;
         this.cnpj = cnpj;
