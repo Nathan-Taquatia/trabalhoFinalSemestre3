@@ -27,7 +27,6 @@ public class ContaService {
     }
 
     public Conta cadastrar(Conta conta) {
-        // Validações podem ser adicionadas aqui
         return repository.save(conta);
     }
 

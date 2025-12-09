@@ -1,13 +1,11 @@
 package com.example.trabalhofinalhgnathan.controller;
-/* 
+
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,77 +13,74 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.example.trabalhofinalhgnathan.model.Banco;
 import com.example.trabalhofinalhgnathan.model.Cliente;
-import com.example.trabalhofinalhgnathan.model.Conta;
+import com.example.trabalhofinalhgnathan.service.ClienteService;
 
-@Controller
-@RequestMapping("/cliente-controller")*/
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/clientes")
 public class ClienteController {
-    /*
-    @Autowired
-    private final ClienteService clienteService;
 
-    public ClienteController() {
-    this.clienteService = clienteService;
-    }
+	private final ClienteService clienteService;
 
+	@Autowired
+	public ClienteController(ClienteService clienteService) {
+		this.clienteService = clienteService;
+	}
 
-    @PostMapping("/cadastrar")
-    public ResponseEntity<Conta> cadastrar(@RequestBody Conta conta) {
-        
-        try {
-            Conta contaCadastrado = contaService.cadastrar(conta);
-            return ResponseEntity.status(HttpStatus.CREATED).body(contaCadastrado);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        }
-        
-        return null;
-    }
-    
+	@GetMapping
+	public ResponseEntity<List<Cliente>> getAll() {
+		List<Cliente> clientes = clienteService.findAll();
+		return ResponseEntity.ok(clientes);
+	}
 
-    
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteConta(@PathVariable int id) {
-        boolean removed = contaService.deleteById(id);
-        return removed ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
-    }
-    
+	@GetMapping("/{id}")
+	public ResponseEntity<Cliente> getById(@PathVariable Integer id) {
+		Optional<Cliente> cliente = clienteService.findById(id);
+		return cliente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	}
 
-    
-    @GetMapping("/search/{id}")
-    public String buscaPorId(@PathVariable("id") String id, Model model) {
-        Cliente busca = clienteService.findById(id);
-        model.addAttribute("id", busca);
-        return "search-cliente";
-    }
-    
+	@GetMapping("/cpf/{cpf}")
+	public ResponseEntity<Cliente> getByCpf(@PathVariable String cpf) {
+		Optional<Cliente> cliente = clienteService.findByCpf(cpf);
+		return cliente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	}
 
-    
-    @PutMapping("/clientes/{id}")
-    public ResponseEntity<Cliente> editarCliente(@PathVariable int id, @RequestBody Cliente cliente) {
-    Optional<Cliente> existente = clienteService.findById(id);
-    if (!existente.isPresent()) {
-        return ResponseEntity.notFound().build();
-    }
-    // Atualiza apenas campos permitidos (exemplo: nome e cpf)
-    Cliente atual = existente.get();
-    atual.setNome(cliente.getNome());
-    atual.setCpf(cliente.getCpf());
-    Cliente atualizado = clienteService.update(id, atual);
-    return ResponseEntity.ok(atualizado);
-    }
-    
+	@PostMapping
+	public ResponseEntity<Cliente> cadastrar(@RequestBody @Valid Cliente cliente) {
+		try {
+			Cliente novo = clienteService.cadastrar(cliente);
+			return ResponseEntity.status(HttpStatus.CREATED).body(novo);
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.badRequest().build();
+		}
+	}
 
-    
-    @GetMapping("/bancos/search")
-    public ResponseEntity<List<Banco>> search(@RequestParam("q") String q) {
-    List<Banco> results = bancoService.searchByName(q);
-    return ResponseEntity.ok(results);
-    }
-    */
+	@PutMapping("/{id}")
+	public ResponseEntity<Cliente> atualizar(@PathVariable Integer id, @RequestBody @Valid Cliente cliente) {
+		try {
+			Cliente atualizado = clienteService.atualizar(id, cliente);
+			return ResponseEntity.ok(atualizado);
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.badRequest().build();
+		}
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deletarCliente(@PathVariable Integer id) {
+		try {
+			Optional<Cliente> existe = clienteService.findById(id);
+			if (existe.isPresent()) {
+				clienteService.deleteById(id);
+				return ResponseEntity.noContent().build();
+			}
+			return ResponseEntity.notFound().build();
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
+	}
 
 }
