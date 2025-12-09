@@ -1,5 +1,15 @@
 package com.example.trabalhofinalhgnathan.model;
-import jakarta.persistence.*;
+import java.util.Objects;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 
 @Entity
@@ -8,15 +18,15 @@ public class Conta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false)
-    private int numero;
+    private Integer numero;
 
     @Column(nullable = false)
     private double saldo;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
@@ -31,7 +41,7 @@ public class Conta {
         this.saldo = saldo;
         this.cliente = cliente;
         this.agencia = agencia;
-    }
+    }   
 
     public int getId() {
         return id;
@@ -78,9 +88,9 @@ public class Conta {
         if (getClass() != obj.getClass())
             return false;
         Conta other = (Conta) obj;
-        if (id != other.id)
+        if (!Objects.equals(id, other.id))
             return false;
-        if (numero != other.numero)
+        if (!Objects.equals(numero, other.numero))
             return false;
         if (Double.doubleToLongBits(saldo) != Double.doubleToLongBits(other.saldo))
             return false;
